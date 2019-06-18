@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">-->
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <style type="text/css">
+         #map_area {
+            /*position:fixed;*/
+            /*height:40em;*
+            /*width:40em;*/
+            position:fixed;
+            height:30em;
+            width:25em;
+            top:0;
+            left:0;
+            border:1;
+         }
+
+		       .controls {
+        margin-top: 0px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+		width:30em;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+	  .pac-container {
+    z-index: 3000 !important;
+}
+         </style>
+         <link rel="stylesheet" type="text/css" href="css/index.css">
+         <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+		 <link rel="stylesheet" href="css/awesomplete.css" />
+         <!--<script src="js/jquery-2.2.4.min.js"></script>-->
+         <script src="js/jquery.js"></script>
+         <script src="js/jquery.mobile-1.4.5.min.js"></script>
+         <script src="js/jqm-spinbox.js"></script>
+         <script src="js/awesomplete.js"></script>
+        <title>Hello World</title>
+    </head>
+    <body>
+        <div data-role="page" id="pag_medicionHeader">
+            <div data-role="header">
+                <h1 class="ui-btn-left"><p class="username" style="font-weight:bold">Left</p></h1>
+                <h1 class="campaniaTitle">Center</h1>
+                <a href="#"  data-icon="back" class="ui-btn-right" data-theme="a">Right</a>
+            </div>
+            <div role="main" class="ui-content" id="medicionHeaderContainer">
+                <div class="ui-field-contain">
+          			<button type="button" id="botonLogin" class="btn btn-primary mySubmit">Show</button>
+					<a href="geo:38.897096,-77.036545">open map</a>
+          		</div>
+            </div>
+            <div data-role="footer"  data-position="fixed" style="text-align: center">
+                <a id="pag_medicionHeader_menu" data-icon="bars" data-iconpos="notext" class="ui-btn-left" style="display:none">Menu</a>
+                <img style="text-align: center" src="img/logo4.png"/>
+                <h1 class="ui-btn-right"><p class="version" style="font-size:0.7em;font-style: italic"></p></h1>
+            </div>
+			  <div data-role="popup" id="myPopup" data-position-to="window" data-transition="turn" style="" data-dismissible="false">
+				<div role="main" class="ui-content" id="medicionHeaderContainer" style="width:97vw;height:96vh;padding:0px">
+					<!--<div class="ui-grid-a" style="background-color:red;width:90vw;">
+						<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.5em;margin:0em;border:0.5em;text-align:center">ALTERNATIVA A</div></div>
+						<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.5em;margin:0em;border:0.5em;text-align:center">ALTERNATIVA B</div></div>
+
+						<div class="ui-block-a" ><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.3em;margin:0em;border:0.5em">- Tipo de ruta:  Calzada Simple C/berma</div></div>
+						<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.3em;margin:0em;border:0.5em">- Tipo de ruta:  Autopista</div></div>
+						<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.3em;margin:0em;border:0.5em">- Distancia viaje: 120 km</div></div>
+						<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.3em;margin:0em;border:0.5em">- Distancia viaje: 120 km</div></div>
+						<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.3em;margin:0em;border:0.5em">- Tiempo de Viaje: 1:20 </div></div>
+						<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.3em;margin:0em;border:0.5em">- Tiempo de Viaje: 1 Hora</div></div>
+						<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.3em;margin:0em;border:0.5em">- Costo Peajes: Gratis </div></div>
+						<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.3em;margin:0em;border:0.5em">- Costo Peajes: $2500</div></div>
+						<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.3em;margin:0em;border:0.5em"><img src="img/logo4.png"></img></div></div>
+						<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="width:50vw;padding:0em;padding:0.3em;margin:0em;border:0.5em"><img width="80%" src="img/acc_escuela_militar.png"></img></div></div>
+					</div>-->
+					<div class="ui-grid-a" style="width:97vw;height:100vh;padding:0px;border: 0px">
+						<div class="ui-block-a" style="border: 0px solid padding:0px" onclick="blah(1)"><div class="ui-bar ui-bar-a" style="border: 0px solid padding:0px" >
+							<table data-role="table" id="movie-table" data-mode="reflow" class="ui-responsive" style="border: 1px solid rgb(51,51,51);padding:0px">
+								<thead>
+									<th>Alternativa A</th>
+								</thead>
+								<tbody>
+									<tr>
+										<td>ksajlkdlaskdjjdasldjlkasjkdjkas nk</td>
+									</tr>
+                                    <tr>
+										<td>ksajlkdlaskdjjdasldjlkasjkdjkas nk</td>
+									</tr>
+                                    <tr>
+										<td>ksajlkdlaskdjjdasldjlkasjkdjkas nk</td>
+									</tr>
+									<tr>
+										<td>ksajlkdlaskdjjdasldjlkasjkdjkas nk</td>
+									</tr>
+									<tr>
+										<td>ksajlkdlaskdjjdasldjlkasjkdjkas nk</td>
+									</tr>
+								</tbody>
+							</table>
+						</div></div>
+						<div class="ui-block-b" onclick="blah(2)"><div class="ui-bar ui-bar-a" >
+							<table data-role="table" id="movie-table" data-mode="reflow" class="ui-responsive" style="border: 1px solid rgb(51,51,51);">
+								<thead>
+									<th>Alternativa A</th>
+								</thead>
+								<tbody>
+									<tr>
+										<td>ksajlkdlaskdjjdasldjlkasjkdjkas nk</td>
+									</tr>
+									<tr>
+										<td>ksajlkdlaskdjjdasldjlkasjkdjkas nk</td>
+									</tr>
+									<tr>
+										<td>ksajlkdlaskdjjdasldjlkasjkdjkas nk</td>
+									</tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                    </tr>
+
+								</tbody>
+
+							</table>
+						</div></div>
+                        <div class="ui-block-a" onclick="blah(3)"><div class="ui-bar ui-bar-a" >
+                            <img width="100%" src="img/pref2.png"></img>
+                        </div></div>
+                        <div class="ui-block-b" onclick="blah(4)"><div class="ui-bar ui-bar-a" >
+                            <img width="100%" src="img/pref2.png"></img>
+                        </div></div>
+                        <div class="ui-block-a"><div class="ui-bar ui-bar-a" >
+                            <button id="no_r">NO RESPONDE</button>
+						</div></div>
+						<div class="ui-block-b"><div class="ui-bar ui-bar-a" >
+                            <button id="cancel">CANCELAR</button>
+						</div></div>
+					</div>
+				</div>
+			</div>
+		</div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script>
+			var _map = null;
+			var _marker = null;
+			var searchBox = null;
+
+			var app = {
+				initialize: function() {
+					document.addEventListener('DOMContentLoaded', this.onDeviceReady.bind(this), false);
+				},
+				onDeviceReady: function() {
+					$("#botonLogin").on("click", function(){showMapa();});
+					$("#no_r").on("click", function(){
+                        screen.orientation.lock('portrait-primary');
+                        $("#myPopup").popup("close");
+                    });
+                    $("#cancel").on("click", function(){
+                        screen.orientation.lock('portrait-primary');
+                        $("#myPopup").popup("close");
+                    });
+				},
+				receivedEvent: function(id) {
+				}
+			};
+             function showMapa()
+             {
+                 screen.orientation.lock('landscape-secondary');
+                 console.log('Orientation is ' + screen.orientation.type);
+            	setTimeout(function(){ $('#myPopup').css('overflow-x', 'scroll');    $("#myPopup").popup("open", { transition: "slideup"   })}, 700);
+                //$('#myPopup').css('overflow-x', 'scroll');
+                //$("#myPopup").popup("open", { transition: "slideup"   });
+                //screen.orientation.lock('landscape-secondary');
+                //console.log('Orientation is ' + screen.orientation.type);
+
+             }
+             function blah(value){
+                 alert(value);
+             }
+			app.initialize();
+		</script>
+    </body>
+</html>
